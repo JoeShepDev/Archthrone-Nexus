@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.archthrone.nexus.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.archthrone.nexus.model.WeatherResponse;
 
 @RestController
 @RequestMapping("/api/weather")
@@ -15,7 +16,7 @@ public class WeatherController
     private WeatherService weatherService;
 
     @GetMapping
-    public String getWeather(@RequestParam double lat, @RequestParam double lon) 
+    public WeatherResponse getWeather(@RequestParam double lat, @RequestParam double lon) 
     {
         return weatherService.getWeather(lat, lon);
     }
