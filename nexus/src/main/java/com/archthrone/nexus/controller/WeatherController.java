@@ -16,8 +16,8 @@ public class WeatherController
     private WeatherService weatherService;
 
     @GetMapping
-    public WeatherResponse getWeather(@RequestParam double lat, @RequestParam double lon) 
+    public WeatherResponse getWeather(@RequestParam double lat, @RequestParam double lon, @RequestParam(defaultValue = "metric") String units)
     {
-        return weatherService.getWeather(lat, lon);
+        return weatherService.getWeather(lat, lon, units);
     }
 }

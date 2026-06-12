@@ -17,10 +17,10 @@ public class WeatherService
     @Value("${weather.api.key}")
     private String _apiKey;
 
-    public WeatherResponse getWeather(Double lat, Double lon)
+    public WeatherResponse getWeather(Double lat, Double lon, String unit)
     {
         String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +
-        lat + "&lon=" + lon + "&appid=" + _apiKey + "&units=metric";
+        lat + "&lon=" + lon + "&appid=" + _apiKey + "&units=" + unit;
 
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(url, String.class);
@@ -39,7 +39,6 @@ public class WeatherService
             double feelsLike = root.path("main").path("feels_like").asDouble();
             int humidity = root.path("main").path("humidity").asInt();
             int pressure = root.path("main").path("pressure").asInt();
-            String unit = "C";
 
             String sunriseFormatted = Instant.ofEpochSecond(sunrise)
             .atZone(zone).format(DateTimeFormatter.ofPattern("h:mm a"));
@@ -47,7 +46,9 @@ public class WeatherService
             String sunsetFormatted = Instant.ofEpochSecond(sunset)
             .atZone(zone).format(DateTimeFormatter.ofPattern("h:mm a"));
 
-            return new WeatherResponse(cityName, condition, sunriseFormatted, sunsetFormatted, temperature, feelsLike, humidity, pressure, unit);
+            String unitLabel = unit.equals("imperial") ? "°F" : "°C";
+
+            return new WeatherResponse(cityName, condition, sunriseFormatted, sunsetFormatted, temperature, feelsLike, humidity, pressure, unitLabel);
         }
         catch (Exception e)
         {
